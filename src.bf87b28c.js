@@ -589,4 +589,4 @@ try{var r=require("crypto")}catch(c){}var e=function(r){return void 0===r},t=fun
 },{"pixi.js":"wbEC","mainloop.js":"idG0","./utils/Constants":"MkrV","./screens/MotionScreen":"ll7e"}],"QCba":[function(require,module,exports) {
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0});var e=require("./app"),t=require("./utils/Settings");window.onload=function(){new e.GameApp(t.Settings.WINDOW_WIDTH_PX,t.Settings.WINDOW_HEIGHT_PX)};
 },{"./app":"EVxB","./utils/Settings":"Foat"}]},{},["QCba"], null)
-//# sourceMappingURL=/src.bf87b28c.js.map
+//# sourceMappingURL=src.bf87b28c.js.map
