@@ -10,6 +10,7 @@ import {
     PATCH_OUTLINE_COLOR,
     PATCH_OUTLINE_THICKNESS
 } from '../utils/Constants';
+import { getRandomPosition } from '../utils/RandomPosition';
 
 export class MotionTutorialTaskWorld extends AbstractMotionWorld {
     constructor() {
@@ -252,7 +253,7 @@ export class MotionTutorialTaskWorld extends AbstractMotionWorld {
             if (dot.aliveTimer <= 0) {
                 dot.resetAliveTimer();
                 dotPosition =
-                    this.getRandomPosition(
+                    getRandomPosition(
                         this.leftMinX + this.dotRadius,
                         this.patchMinY + this.dotRadius,
                         this.leftMaxX - this.dotRadius,
@@ -289,7 +290,7 @@ export class MotionTutorialTaskWorld extends AbstractMotionWorld {
             if (dot.aliveTimer <= 0) {
                 dot.resetAliveTimer();
                 dotPosition =
-                    this.getRandomPosition(
+                    getRandomPosition(
                         this.rightMinX + this.dotRadius,
                         this.patchMinY + this.dotRadius,
                         this.rightMaxX - this.dotRadius,

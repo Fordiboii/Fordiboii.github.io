@@ -3,6 +3,7 @@ import { Patch } from "../objects/Patch";
 import * as PIXI from "pixi.js";
 import { QuadTree } from "../utils/QuadTree";
 import { WorldState } from "../utils/Enums";
+import { getRandomPosition } from "../utils/RandomPosition";
 import { PATCH_OUTLINE_THICKNESS } from "../utils/Constants";
 import { Settings } from "../utils/Settings";
 
@@ -89,11 +90,6 @@ export abstract class AbstractMotionWorld extends PIXI.Container {
 
     abstract createDots(): void;
 
-    destroyDots = (): void => {
-        this.dotsLeft.forEach(dot => dot.destroy());
-        this.dotsRight.forEach(dot => dot.destroy());
-    }
-
     paused = (): void => {
         this.patchLeftObjectsContainer.visible = false;
         this.patchRightObjectsContainer.visible = false;
@@ -164,7 +160,7 @@ export abstract class AbstractMotionWorld extends PIXI.Container {
             if (dot.aliveTimer <= 0) {
                 dot.resetAliveTimer();
                 dotPosition =
-                    this.getRandomPosition(
+                    getRandomPosition(
                         this.leftMinX + this.dotRadius,
                         this.patchMinY + this.dotRadius,
                         this.leftMaxX - this.dotRadius,
@@ -201,7 +197,7 @@ export abstract class AbstractMotionWorld extends PIXI.Container {
             if (dot.aliveTimer <= 0) {
                 dot.resetAliveTimer();
                 dotPosition =
-                    this.getRandomPosition(
+                    getRandomPosition(
                         this.rightMinX + this.dotRadius,
                         this.patchMinY + this.dotRadius,
                         this.rightMaxX - this.dotRadius,
@@ -244,24 +240,9 @@ export abstract class AbstractMotionWorld extends PIXI.Container {
             )
             .endFill()
 
-        // this.patchLeftObjectsContainer.mask = this.patchLeftMask;
-        // this.patchRightObjectsContainer.mask = this.patchRightMask;
+        this.patchLeftObjectsContainer.mask = this.patchLeftMask;
+        this.patchRightObjectsContainer.mask = this.patchRightMask;
         this.addChild(this.patchLeftObjectsContainer, this.patchRightObjectsContainer);
-    }
-
-    /**
-     * Gets a random position within a rectangular area.
-     * @param xMin left bound of area. Float.
-     * @param yMin left bound of area. Float.
-     * @param xMax left bound of area. Float.
-     * @param yMax left bound of area. Float.
-     * @returns array with x and y coordinates.
-     */
-    getRandomPosition = (xMin: number, yMin: number, xMax: number, yMax: number): [number, number] => {
-        let x, y: number;
-        x = Math.random() * (xMax - xMin) + xMin;
-        y = Math.random() * (yMax - yMin) + yMin;
-        return [x, y]
     }
 
     /**

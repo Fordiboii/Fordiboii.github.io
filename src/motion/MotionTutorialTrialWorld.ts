@@ -26,6 +26,8 @@ export class MotionTutorialTrialWorld extends AbstractMotionWorld {
         super();
         this.tutorialTrialScreen = tutorialTrialScreen;
 
+        this.coherencePercent = Settings.DOT_TUTORIAL_COHERENCE_PERCENTAGE;
+
         this.createPatches();
 
         this.quadTree = this.createQuadTree(this.patchLeft.x, this.patchLeft.y, this.patchLeft.width * 2 + this.patchGap, this.patchLeft.height);
@@ -234,8 +236,12 @@ export class MotionTutorialTrialWorld extends AbstractMotionWorld {
         this.shuffleGridPoints(this.leftGridPoints);
         this.shuffleGridPoints(this.rightGridPoints);
 
-        // randomly choose patch to contain coherent dots
-        this.coherentPatchSide = Math.round(Math.random()) ? Direction[0] : Direction[1];
+        // to ensure the user experiences both patches as coherent, set the opposite patch as coherent on the second trial. Choose randomly otherwise.
+        if (this.tutorialTrialScreen.stepCounter == 1) {
+            this.coherentPatchSide = this.coherentPatchSide == Direction[0] ? Direction[1] : Direction[0];
+        } else {
+            this.coherentPatchSide = Math.round(Math.random()) ? Direction[0] : Direction[1];
+        }
 
         // randomly choose direction of coherent moving dots
         const coherentDirection: Direction = Math.round(Math.random()) ? Direction.RIGHT : Direction.LEFT;
