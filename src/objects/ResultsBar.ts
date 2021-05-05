@@ -46,7 +46,7 @@ export class ResultsBar extends PIXI.Container {
         this.addChild(this.resultBarGradient);
 
         // add min score label
-        this.minLabel = new PIXI.Text("0",
+        this.minLabel = new PIXI.Text("1",
             {
                 fontSize: Settings.FONT_SIZE * 1.1,
                 fill: TEXT_COLOR,
@@ -89,7 +89,7 @@ export class ResultsBar extends PIXI.Container {
      * @param value where to place the marker. Between 0-100.
      */
     setMarker = (value: number): void => {
-        const stepSize: number = this.resultBarGradient.width / 100;
-        this.marker.x = this.resultBarGradient.x - this.resultBarGradient.width / 2 + Math.round(value * stepSize);
+        const stepSize: number = this.resultBarGradient.width / 99;
+        this.marker.x = this.resultBarGradient.x - this.resultBarGradient.width / 2 + Math.round(value * stepSize) - stepSize;
     }
 }

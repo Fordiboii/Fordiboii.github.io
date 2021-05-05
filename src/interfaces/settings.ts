@@ -43,3 +43,10 @@ export interface StaircaseSettings {
     stair_reversal_points: number,
     stair_mean_from_last: number
 }
+
+export interface TutorialSettings {
+    tutorial_max_trials: number,
+    tutorial_dot_coherence_percent: number,
+    tutorial_staircase_correct_answer_db: number,
+    tutorial_staircase_wrong_answer_db: number
+}

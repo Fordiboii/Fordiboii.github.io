@@ -6,7 +6,8 @@ import {
     ScreenSettings,
     MotionSettings,
     FormSettings,
-    StaircaseSettings
+    StaircaseSettings,
+    TutorialSettings
 } from "../interfaces/settings";
 
 export class TestResults {
@@ -24,6 +25,7 @@ export class TestResults {
     motionSettings: MotionSettings;
     formSettings: FormSettings;
     staircaseSettings: StaircaseSettings;
+    tutorialSettings: TutorialSettings;
 
     constructor(testType: TestType, trials: Array<Trial>, reversalPoints: Array<number>, correctAnswers: number, wrongAnswers: number) {
         this.testType = TestType[testType];
@@ -90,6 +92,14 @@ export class TestResults {
             stair_max_tries: Settings.STAIRCASE_MAX_ATTEMPTS,
             stair_reversal_points: Settings.STAIRCASE_REVERSAL_POINTS,
             stair_mean_from_last: Settings.STAIRCASE_REVERSALS_TO_CALCULATE_MEAN
+        }
+
+        // add tutorial settings
+        this.tutorialSettings = {
+            tutorial_dot_coherence_percent: Settings.DOT_TUTORIAL_COHERENCE_PERCENTAGE,
+            tutorial_max_trials: Settings.TRIAL_MAX_STEPS,
+            tutorial_staircase_correct_answer_db: Settings.TUTORIAL_STAIRCASE_CORRECT_ANSWER_DB,
+            tutorial_staircase_wrong_answer_db: Settings.TUTORIAL_STAIRCASE_WRONG_ANSWER_DB
         }
     }
 }

@@ -75,6 +75,9 @@ export abstract class Settings {
     public static TRIAL_SCREEN_Y: number;
 
     public static TRIAL_MAX_STEPS: number;
+    public static DOT_TUTORIAL_COHERENCE_PERCENTAGE: number;
+    public static TUTORIAL_STAIRCASE_CORRECT_ANSWER_DB: number; // in decibel.
+    public static TUTORIAL_STAIRCASE_WRONG_ANSWER_DB: number; // in decibel.
 
     public static load = (): void => {
         // Screen settings
@@ -147,6 +150,9 @@ export abstract class Settings {
         Settings.TRIAL_SCREEN_X = Settings.WINDOW_WIDTH_PX / 2;
         Settings.TRIAL_SCREEN_Y = Settings.WINDOW_HEIGHT_PX / 2 - Settings.WINDOW_HEIGHT_PX / 10;
 
-        Settings.TRIAL_MAX_STEPS = 3;
+        Settings.TRIAL_MAX_STEPS = 7;
+        Settings.DOT_TUTORIAL_COHERENCE_PERCENTAGE = 80;
+        Settings.TUTORIAL_STAIRCASE_CORRECT_ANSWER_DB = 2;
+        Settings.TUTORIAL_STAIRCASE_WRONG_ANSWER_DB = 3;
     }
 }
