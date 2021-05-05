@@ -56,8 +56,8 @@ export class TutorialTrialScreen extends TutorialScreen {
 
         this.maxSteps = Settings.TRIAL_MAX_STEPS;
         this.stepCounter = 0;
-        this.correctAnswerFactor = Psychophysics.decibelToFactor(Settings.STAIRCASE_CORRECT_ANSWER_DB);
-        this.wrongAnswerFactor = Psychophysics.decibelToFactor(Settings.STAIRCASE_WRONG_ANSWER_DB);
+        this.correctAnswerFactor = Psychophysics.decibelToFactor(Settings.TUTORIAL_STAIRCASE_CORRECT_ANSWER_DB);
+        this.wrongAnswerFactor = Psychophysics.decibelToFactor(Settings.TUTORIAL_STAIRCASE_WRONG_ANSWER_DB);
 
         // set header text and tutorial world based on test type
         if (testType == TestType.MOTION) {
@@ -157,7 +157,7 @@ export class TutorialTrialScreen extends TutorialScreen {
         // add tutorial text
         this.tutorialText.text =
             "Try it out a few times! Keep in mind that you will not receive feedback on whether or not you have chosen the correct box during the actual test."
-            + " When you are ready, click NEXT.";
+            + " To complete the tutorial, click NEXT.";
 
         // add trial texts
         const TRIAL_TEXT_X: number = Settings.WINDOW_WIDTH_PX / 2;

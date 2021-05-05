@@ -100,29 +100,26 @@ export class TutorialTaskScreen extends TutorialScreen {
         if (testType == TestType.MOTION) {
             this.tutorialText.text =
                 "In the test you are shown two boxes with moving dots." +
+                " Your task is to select the box where some of the dots are moving left and right, here shown in box 2." +
                 ` The dots are displayed for ${Settings.DOT_MAX_ANIMATION_TIME / 1000} seconds before disappearing. ` +
-                " Your task is to identify and select the box with dots moving systematically back and forth, here shown in box 2." +
                 " You select a box by clicking it or using the left and right arrow keys on your keyboard." +
-                " This exercise is repeated several times. The difficulty increases or decreases if your answer is correct or wrong, respectively." +
-                " When the test is over you will receive a test score." +
-                " The test takes approximately 8 minutes.";
+                " This exercise is repeated several times, increasing in difficulty when answered correctly and decreasing otherwise." +
+                " Please take as much time as you need before selecting a box."
         } else if (testType == TestType.FORM_FIXED) {
             this.tutorialText.text =
                 "In the test you are shown two boxes with line segments rotated at different angles." +
+                " Your task is to select the box where a number of line segments form circles, here shown in box 2." +
                 ` The line segments are displayed for ${Settings.FORM_FIXED_DETECTION_TIME / 1000} seconds before disappearing.` +
-                " Your task is to identify and select the box where a number of line segments form concentric circles, here shown in box 2." +
                 " You select a box by clicking it or using the left and right arrow keys on your keyboard." +
-                " This exercise is repeated several times. The difficulty increases or decreases if your answer is correct or wrong, respectively." +
-                " When the test is over you will receive a test score." +
-                " The test takes approximately 8 minutes.";
+                " This exercise is repeated several times, increasing in difficulty when answered correctly and decreasing otherwise." +
+                " Please take as much time as you need before selecting a box."
         } else if (testType == TestType.FORM_RANDOM) {
             this.tutorialText.text =
                 "In the test you are shown two boxes with line segments rotated at different angles." +
-                " Your task is to identify and select the box where a number of line segments form concentric circles, here shown in box 2." +
+                " Your task is to select the box where a number of line segments form circles, here shown in box 2." +
                 " You select a box by clicking it or using the left and right arrow keys on your keyboard." +
-                " This exercise is repeated several times. The difficulty increases or decreases if your answer is correct or wrong, respectively." +
-                " When the test is over you will receive a test score." +
-                " The test takes approximately 8 minutes.";
+                " This exercise is repeated several times, increasing in difficulty when answered correctly and decreasing otherwise." +
+                " Please take as much time as you need before selecting a box."
         }
 
         // set selected circle

@@ -25,7 +25,11 @@ export class FormTutorialTrialWorld extends AbstractFormWorld {
         this.createPatches();
         this.calculateMaxMin();
         this.createPatchContainerMasks();
-        this.createLineSegments();
+
+        // choose first coherent patch randomly
+        this.coherentPatchSide = Math.round(Math.random()) ? Direction[0] : Direction[1];
+
+        this.createLineSegments(this.coherentPatchSide);
     }
 
     /**
@@ -89,7 +93,15 @@ export class FormTutorialTrialWorld extends AbstractFormWorld {
         this.lineSegments = [];
         this.lineSegmentsLeftContainer.removeChildren();
         this.lineSegmentsRightContainer.removeChildren();
-        this.createLineSegments();
+
+        // to ensure the user experiences both patches as coherent, set the opposite patch as coherent on the second trial. Choose randomly otherwise.
+        if (this.tutorialTrialScreen.stepCounter == 1) {
+            this.coherentPatchSide = this.coherentPatchSide == Direction[0] ? Direction[1] : Direction[0];
+        } else {
+            this.coherentPatchSide = Math.round(Math.random()) ? Direction[0] : Direction[1];
+        }
+
+        this.createLineSegments(this.coherentPatchSide);
     }
 
     /**
@@ -117,8 +129,9 @@ export class FormTutorialTrialWorld extends AbstractFormWorld {
 
     /**
      * Calculates and fetches parameters for creating line segments
+     * @param coherentPatchSide the patch to make concentric circles in
      */
-    createLineSegments(): void {
+    createLineSegments(coherentPatchSide: string): void {
         let x: number;
         let y: number;
 
@@ -129,10 +142,8 @@ export class FormTutorialTrialWorld extends AbstractFormWorld {
             Settings.WINDOW_WIDTH_MM
         );
 
-        // randomly choose patch to contain concentric circles
         // get a random circle center if not fixed, otherwise it's the center of the patch
-        this.coherentPatchSide = Math.round(Math.random()) ? Direction[0] : Direction[1];
-        if (this.coherentPatchSide == "LEFT") {
+        if (coherentPatchSide == "LEFT") {
             if (this.isFixed) {
                 x = this.patchLeft.x + (this.patchLeft.width / 2);
                 y = this.patchLeft.y + (this.patchLeft.height / 2);

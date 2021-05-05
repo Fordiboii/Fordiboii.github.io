@@ -41,18 +41,21 @@ export class LandingPageScreen extends TutorialScreen {
         // set tutorial text based on test type
         if (testType == TestType.MOTION) {
             this.tutorialText.text = "The Magno motion test measures your visual sensitivity to motion and is used in dyslexia research to further our understanding " +
-                "of the disorder's underlying causes. Its secondary purpose is to aid in the early detection of those at risk of developing it to put preventive measures in place as soon as possible. " +
-                "\n\nYou will first go through a tutorial preparing you for the test. After completing the test you will receive a score between 1 and 100, where 1 is the best possible score. " +
+                "of the disorder and its underlying causes. " +
+                "\n\nYou will first go through a tutorial as preparation before taking the test. After completing it you will receive a score between 1 and 100, where 1 is the best possible score. " +
+                "The test takes approximately 8 minutes. " +
                 "Click NEXT to continue.";
         } else if (testType == TestType.FORM_FIXED) {
             this.tutorialText.text = "The Magno form fixed test measures your object detection ability and is used in dyslexia research to further our understanding " +
-                "of the disorder's underlying causes. Its secondary purpose is to aid in the early detection of those at risk of developing it to put preventive measures in place as soon as possible. " +
-                "\n\nYou will first go through a tutorial preparing you for the test. After completing the test you will receive a score between 1 and 100, where 1 is the best possible score. " +
+                "of the disorder and its underlying causes. " +
+                "\n\nYou will first go through a tutorial as preparation before taking the test. After completing it you will receive a score between 1 and 100, where 1 is the best possible score. " +
+                "The test takes approximately 8 minutes. " +
                 "Click NEXT to continue.";
         } else if (testType == TestType.FORM_RANDOM) {
             this.tutorialText.text = "The Magno form random test measures your object detection ability and is used in dyslexia research to further our understanding " +
-                "of the disorder's underlying causes. Its secondary purpose is to aid in the early detection of those at risk of developing it to put preventive measures in place as soon as possible. " +
-                "\n\nYou will first go through a tutorial preparing you for the test. After completing the test you will receive a score between 1 and 100, where 1 is the best possible score. " +
+                "of the disorder and its underlying causes. " +
+                "\n\nYou will first go through a tutorial as preparation before taking the test. After completing it you will receive a score between 1 and 100, where 1 is the best possible score. " +
+                "The test takes approximately 8 minutes. " +
                 "Click NEXT to continue.";
         }
         this.tutorialText.anchor.set(0.5);

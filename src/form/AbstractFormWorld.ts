@@ -104,8 +104,6 @@ export abstract class AbstractFormWorld extends PIXI.Container {
 
     abstract createPatches(): void;
 
-    abstract createLineSegments(): void;
-
     /**
      * Creates a set number of concentric circles with the line segments aligned to the tangent of a given circle
      * with center x,y and max radius of r. When coherence is lowered, segments of the circle is
