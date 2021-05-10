@@ -13,8 +13,8 @@
     "build:form-fixed": "cross-env TEST_TYPE=FORM_FIXED parcel build ./src/index.html --public-url . --out-dir dist/form_fixed",
     "build:form-random": "cross-env TEST_TYPE=FORM_RANDOM parcel build ./src/index.html --public-url . --out-dir dist/form_random",
     "deploy:motion": "gh-pages -d dist/motion",
-    "deploy:form_fixed": "gh-pages -d dist/form_fixed",
-    "deploy:form_random": "gh-pages -d dist/form_random"
+    "deploy:form-fixed": "gh-pages -d dist/form_fixed",
+    "deploy:form-random": "gh-pages -d dist/form_random"
   },
   "author": "Fordiboii",
   "license": "MIT",
