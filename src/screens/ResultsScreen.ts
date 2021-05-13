@@ -1,3 +1,4 @@
+import i18next, { TFunction } from "i18next";
 import * as PIXI from "pixi.js";
 import { GameApp } from "../app";
 import { TextButton } from "../objects/buttons/TextButton";
@@ -24,8 +25,11 @@ export class ResultsScreen extends PIXI.Container {
 
     constructor(gameApp: GameApp) {
         super();
-        // reference to game object
+        // get test results
         this.testResults = gameApp.getTestResults();
+
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
 
         // round threshold score to 2 decimals
         const threshold: number = Number(this.testResults.threshold.toFixed(2));
@@ -38,7 +42,7 @@ export class ResultsScreen extends PIXI.Container {
 
         // add header
         const HEADER_FONT_SIZE: number = Settings.FONT_SIZE * 1.2;
-        this.header = new PIXI.Text("TEST RESULTS",
+        this.header = new PIXI.Text(t("resultsScreen.header"),
             {
                 fontSize: HEADER_FONT_SIZE,
                 fill: TEXT_COLOR,
@@ -55,7 +59,7 @@ export class ResultsScreen extends PIXI.Container {
 
         // add score
         const SCORE_FONT_SIZE: number = Settings.FONT_SIZE * 1.5;
-        this.score = new PIXI.Text(`YOUR SCORE: ${threshold}`,
+        this.score = new PIXI.Text(t("resultsScreen.score", { score: threshold }),
             {
                 fontSize: SCORE_FONT_SIZE,
                 fill: TEXT_COLOR,
@@ -70,13 +74,12 @@ export class ResultsScreen extends PIXI.Container {
         this.score.roundPixels = true;
         this.addChild(this.score);
 
-        this.descriptionText = "Thank you for participating.\n\n "
         if (threshold < 20) {
-            this.descriptionText += "Your score is within the normal score range.";
+            this.descriptionText = t("resultsScreen.descriptionHigh");
         } else if (threshold >= 20 && threshold < 50) {
-            this.descriptionText += "Your score is slightly above the normal score range.";
+            this.descriptionText = t("resultsScreen.descriptionMedium");
         } else {
-            this.descriptionText += "Your score is significantly above the normal score range.";
+            this.descriptionText = t("resultsScreen.descriptionLow");
         }
 
         // add description
@@ -108,7 +111,7 @@ export class ResultsScreen extends PIXI.Container {
             Settings.TEXT_BUTTON_HEIGHT,
             NEXT_BUTTON_COLOR,
             NEXT_BUTTON_STROKE_COLOR,
-            "EXIT",
+            t("exitButton"),
             TEXT_COLOR,
             NEXT_BUTTON_HOVER_COLOR
         );
@@ -138,6 +141,9 @@ export class ResultsScreen extends PIXI.Container {
     }
 
     resize = (width: number, height: number): void => {
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
+
         // background color
         this.backgroundColorSprite.width = width;
         this.backgroundColorSprite.height = height;
@@ -178,10 +184,28 @@ export class ResultsScreen extends PIXI.Container {
             Settings.TEXT_BUTTON_HEIGHT,
             NEXT_BUTTON_COLOR,
             NEXT_BUTTON_STROKE_COLOR,
-            "EXIT",
+            t("exitButton"),
             TEXT_COLOR,
             NEXT_BUTTON_HOVER_COLOR
         );
         this.addChild(this.exitButton);
+    }
+
+    languageChangeHandler = (): void => {
+        const t: TFunction = i18next.t.bind(i18next);
+        const threshold: number = this.testResults.threshold;
+
+        this.header.text = t("resultsScreen.header");
+        this.score.text = t("resultsScreen.score");
+        this.resultsBar.minLabel.text = t("resultsScreen.bar.leftLabel");
+        this.resultsBar.maxLabel.text = t("resultsScreen.bar.rightLabel");
+        if (threshold < 20) {
+            this.descriptionText = t("resultsScreen.descriptionHigh");
+        } else if (threshold >= 20 && threshold < 50) {
+            this.descriptionText = t("resultsScreen.descriptionMedium");
+        } else {
+            this.descriptionText = t("resultsScreen.descriptionLow");
+        }
+        this.exitButton.buttonText.text = t("exitButton");
     }
 }

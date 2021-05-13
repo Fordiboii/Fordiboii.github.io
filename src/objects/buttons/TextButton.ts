@@ -13,7 +13,7 @@ import { Settings } from "../../utils/Settings";
 
 export class TextButton extends PIXI.Container {
     button: PIXI.Graphics = new PIXI.Graphics();
-    text: PIXI.Text;
+    buttonText: PIXI.Text;
 
     buttonWidth: number;
     buttonHeight: number;
@@ -61,7 +61,7 @@ export class TextButton extends PIXI.Container {
             const onClickTextOffset: number = 3;
             const initialTextY: number = height / 2;
             const onClickTextY: number = initialTextY + onClickTextOffset;
-            this.text = new PIXI.Text(
+            this.buttonText = new PIXI.Text(
                 buttonText,
                 {
                     fontName: "Helvetica-Normal",
@@ -69,35 +69,35 @@ export class TextButton extends PIXI.Container {
                     fill: buttonTextColor
                 }
             );
-            this.text.roundPixels = true;
-            this.text.anchor.set(0.5);
-            this.text.x = width / 2;
-            this.text.y = initialTextY;
-            this.addChild(this.text);
+            this.buttonText.roundPixels = true;
+            this.buttonText.anchor.set(0.5);
+            this.buttonText.x = width / 2;
+            this.buttonText.y = initialTextY;
+            this.addChild(this.buttonText);
 
             this.on("mousedown", (): void => {
                 if (!this.isMouseDown) {
-                    this.text.y = onClickTextY;
+                    this.buttonText.y = onClickTextY;
                     this.isMouseDown = true;
                 }
             });
 
             this.on("mouseup", (): void => {
                 if (this.isMouseDown) {
-                    this.text.y = initialTextY;
+                    this.buttonText.y = initialTextY;
                     this.isMouseDown = false;
                 }
             });
 
             this.on("mouseout", (): void => {
                 if (this.isMouseDown) {
-                    this.text.y = initialTextY;
+                    this.buttonText.y = initialTextY;
                 }
             });
 
             this.on("mouseover", (): void => {
                 if (this.isMouseDown) {
-                    this.text.y = onClickTextY;
+                    this.buttonText.y = onClickTextY;
                 }
             });
 
@@ -107,7 +107,7 @@ export class TextButton extends PIXI.Container {
 
             this.on("touchstart", (): void => {
                 if (!this.isMouseDown) {
-                    this.text.y = onClickTextY;
+                    this.buttonText.y = onClickTextY;
                     this.isMouseDown = true;
                 }
             });
@@ -115,7 +115,7 @@ export class TextButton extends PIXI.Container {
             this.on("touchmove", (e: TouchEvent): void => {
                 if (e.target == null) {
                     if (this.isMouseDown) {
-                        this.text.y = initialTextY;
+                        this.buttonText.y = initialTextY;
                         this.isMouseDown = false;
                     }
                 }
@@ -123,7 +123,7 @@ export class TextButton extends PIXI.Container {
 
             this.on("touchend", (): void => {
                 if (this.isMouseDown) {
-                    this.text.y = initialTextY;
+                    this.buttonText.y = initialTextY;
                     this.isMouseDown = false;
                 }
             });
@@ -183,7 +183,7 @@ export class TextButton extends PIXI.Container {
      * Makes the button gray and non-clickable.
      */
     disable = (withStroke?: boolean, strokeWidth = 3): void => {
-        this.text.alpha = 0.5;
+        this.buttonText.alpha = 0.5;
         this.interactive = false;
         this.buttonMode = false;
         this.button.clear();

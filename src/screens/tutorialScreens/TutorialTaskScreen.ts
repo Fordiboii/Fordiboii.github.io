@@ -15,6 +15,7 @@ import { Settings } from '../../utils/Settings';
 import { TutorialScreen } from './TutorialScreen';
 import { TestType } from '../../utils/Enums';
 import { TextButton } from '../../objects/buttons/TextButton';
+import i18next, { TFunction } from 'i18next';
 
 export class TutorialTaskScreen extends TutorialScreen {
     private tutorialTaskWorld: MotionTutorialTaskWorld | FormTutorialTaskWorld;
@@ -27,15 +28,18 @@ export class TutorialTaskScreen extends TutorialScreen {
     constructor(gameApp: GameApp, testType: TestType) {
         super(gameApp);
 
-        // set header text and tutorial world based on test type
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
+
+        // set header
+        this.header.text = t("tutorialHeader");
+
+        // set tutorial world based on test type
         if (testType == TestType.MOTION) {
-            this.header.text = "MOTION TEST TUTORIAL";
             this.tutorialTaskWorld = new MotionTutorialTaskWorld();
         } else if (testType == TestType.FORM_FIXED) {
-            this.header.text = "FORM FIXED TEST TUTORIAL";
             this.tutorialTaskWorld = new FormTutorialTaskWorld(true);
         } else if (testType == TestType.FORM_RANDOM) {
-            this.header.text = "FORM RANDOM TEST TUTORIAL";
             this.tutorialTaskWorld = new FormTutorialTaskWorld(false);
         }
 
@@ -52,7 +56,7 @@ export class TutorialTaskScreen extends TutorialScreen {
         this.addChild(this.tutorialTaskWorld);
 
         // add patch labels
-        this.patchLeftLabel = new PIXI.Text("1", {
+        this.patchLeftLabel = new PIXI.Text(t("patchLabelOne"), {
             fontName: "Helvetica-Normal",
             fontSize: Settings.FONT_SIZE * 1.2,
             fill: PATCH_LABEL_COLOR
@@ -63,7 +67,7 @@ export class TutorialTaskScreen extends TutorialScreen {
         this.patchLeftLabel.y = this.tutorialTaskWorld.patchLeft.y - Settings.WINDOW_HEIGHT_PX / 16;
         this.addChild(this.patchLeftLabel);
 
-        this.patchRightLabel = new PIXI.Text("2", {
+        this.patchRightLabel = new PIXI.Text(t("patchLabelTwo"), {
             fontName: "Helvetica-Normal",
             fontSize: Settings.FONT_SIZE * 1.2,
             fill: PATCH_LABEL_COLOR
@@ -98,28 +102,11 @@ export class TutorialTaskScreen extends TutorialScreen {
 
         // set tutorial text based on test type
         if (testType == TestType.MOTION) {
-            this.tutorialText.text =
-                "In the test you are shown two boxes with moving dots." +
-                " Your task is to select the box where some of the dots are moving left and right, here shown in box 2." +
-                ` The dots are displayed for ${Settings.DOT_MAX_ANIMATION_TIME / 1000} seconds before disappearing. ` +
-                " You select a box by clicking it or using the left and right arrow keys on your keyboard." +
-                " This exercise is repeated several times, increasing in difficulty when answered correctly and decreasing otherwise." +
-                " Please take as much time as you need before selecting a box."
+            this.tutorialText.text = t("motion.tutorialTaskScreen.tutorialText", { dotAnimationTime: Settings.DOT_MAX_ANIMATION_TIME / 1000 });
         } else if (testType == TestType.FORM_FIXED) {
-            this.tutorialText.text =
-                "In the test you are shown two boxes with line segments rotated at different angles." +
-                " Your task is to select the box where a number of line segments form circles, here shown in box 2." +
-                ` The line segments are displayed for ${Settings.FORM_FIXED_DETECTION_TIME / 1000} seconds before disappearing.` +
-                " You select a box by clicking it or using the left and right arrow keys on your keyboard." +
-                " This exercise is repeated several times, increasing in difficulty when answered correctly and decreasing otherwise." +
-                " Please take as much time as you need before selecting a box."
+            this.tutorialText.text = t("formFixed.tutorialTaskScreen.tutorialText", { lineDisplayTime: Settings.FORM_FIXED_DETECTION_TIME / 1000 });
         } else if (testType == TestType.FORM_RANDOM) {
-            this.tutorialText.text =
-                "In the test you are shown two boxes with line segments rotated at different angles." +
-                " Your task is to select the box where a number of line segments form circles, here shown in box 2." +
-                " You select a box by clicking it or using the left and right arrow keys on your keyboard." +
-                " This exercise is repeated several times, increasing in difficulty when answered correctly and decreasing otherwise." +
-                " Please take as much time as you need before selecting a box."
+            this.tutorialText.text = t("formRandom.tutorialTaskScreen.tutorialText");
         }
 
         // set selected circle
@@ -186,6 +173,9 @@ export class TutorialTaskScreen extends TutorialScreen {
     }
 
     resize = (width: number, height: number) => {
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
+
         // button positions
         const backButtonX: number = width / 2 - Settings.NEXT_BACK_BUTTON_SPACING;
         const nextButtonX: number = width / 2 + Settings.NEXT_BACK_BUTTON_SPACING;
@@ -224,7 +214,7 @@ export class TutorialTaskScreen extends TutorialScreen {
                 Settings.TEXT_BUTTON_HEIGHT,
                 NEXT_BUTTON_COLOR,
                 NEXT_BUTTON_STROKE_COLOR,
-                "BACK",
+                t("backButton"),
                 TEXT_COLOR,
                 NEXT_BUTTON_HOVER_COLOR
             );
@@ -242,7 +232,7 @@ export class TutorialTaskScreen extends TutorialScreen {
                 Settings.TEXT_BUTTON_HEIGHT,
                 NEXT_BUTTON_COLOR,
                 NEXT_BUTTON_STROKE_COLOR,
-                "NEXT",
+                t("nextButton"),
                 TEXT_COLOR,
                 NEXT_BUTTON_HOVER_COLOR
             );
@@ -285,5 +275,22 @@ export class TutorialTaskScreen extends TutorialScreen {
         this.patchRightLabel.x = this.tutorialTaskWorld.patchRight.x + this.tutorialTaskWorld.patchRight.width / 2;
         this.patchRightLabel.y = this.tutorialTaskWorld.patchRight.y - height / 16;
         this.patchLeftLabel.style.fontSize = this.patchRightLabel.style.fontSize = Settings.FONT_SIZE * 1.2;
+    }
+
+    languageChangeHandler = (): void => {
+        const t: TFunction = i18next.t.bind(i18next);
+        const testType: TestType = this.gameApp.testType;
+        if (testType == TestType.MOTION) {
+            this.tutorialText.text = t("motion.tutorialTaskScreen.tutorialText", { dotAnimationTime: Settings.DOT_MAX_ANIMATION_TIME / 1000 });
+        } else if (testType == TestType.FORM_FIXED) {
+            this.tutorialText.text = t("formFixed.tutorialTaskScreen.tutorialText", { lineDisplayTime: Settings.FORM_FIXED_DETECTION_TIME / 1000 });
+        } else if (testType == TestType.FORM_RANDOM) {
+            this.tutorialText.text = t("formRandom.tutorialTaskScreen.tutorialText");
+        }
+        this.header.text = t("tutorialHeader");
+        this.patchLeftLabel.text = t("patchLabelOne");
+        this.patchRightLabel.text = t("patchLabelTwo");
+        this.nextButton.buttonText.text = t("nextButton");
+        this.backButton.buttonText.text = t("backButton");
     }
 }

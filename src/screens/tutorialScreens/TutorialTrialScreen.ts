@@ -25,6 +25,7 @@ import { TestType, WorldState } from '../../utils/Enums';
 import { Psychophysics } from '../../utils/Psychophysics';
 import { Settings } from '../../utils/Settings';
 import { TutorialScreen } from './TutorialScreen';
+import i18next, { TFunction } from 'i18next';
 
 export class TutorialTrialScreen extends TutorialScreen {
     public maxSteps: number;
@@ -54,20 +55,23 @@ export class TutorialTrialScreen extends TutorialScreen {
     constructor(gameApp: GameApp, testType: TestType) {
         super(gameApp);
 
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
+
         this.maxSteps = Settings.TRIAL_MAX_STEPS;
         this.stepCounter = 0;
         this.correctAnswerFactor = Psychophysics.decibelToFactor(Settings.TUTORIAL_STAIRCASE_CORRECT_ANSWER_DB);
         this.wrongAnswerFactor = Psychophysics.decibelToFactor(Settings.TUTORIAL_STAIRCASE_WRONG_ANSWER_DB);
 
-        // set header text and tutorial world based on test type
+        // set header text
+        this.header.text = t("tutorialHeader");
+
+        // add tutorial world based on test type
         if (testType == TestType.MOTION) {
-            this.header.text = "MOTION TEST TUTORIAL";
             this.tutorialTrialWorld = new MotionTutorialTrialWorld(this);
         } else if (testType == TestType.FORM_FIXED) {
-            this.header.text = "FORM FIXED TEST TUTORIAL";
             this.tutorialTrialWorld = new FormTutorialTrialWorld(this, true);
         } else if (testType == TestType.FORM_RANDOM) {
-            this.header.text = "FORM RANDOM TEST TUTORIAL";
             this.tutorialTrialWorld = new FormTutorialTrialWorld(this, false);
         }
 
@@ -100,7 +104,7 @@ export class TutorialTrialScreen extends TutorialScreen {
         this.tutorialTrialWorld.patchRight.filters = [this.glowFilter2];
 
         // add patch labels
-        this.patchLeftLabel = new PIXI.Text("1", {
+        this.patchLeftLabel = new PIXI.Text(t("patchLabelOne"), {
             fontName: "Helvetica-Normal",
             fontSize: Settings.FONT_SIZE * 1.2,
             fill: PATCH_LABEL_COLOR
@@ -111,7 +115,7 @@ export class TutorialTrialScreen extends TutorialScreen {
         this.patchLeftLabel.y = this.tutorialTrialWorld.patchLeft.y - Settings.WINDOW_HEIGHT_PX / 16;
         this.addChild(this.patchLeftLabel);
 
-        this.patchRightLabel = new PIXI.Text("2", {
+        this.patchRightLabel = new PIXI.Text(t("patchLabelTwo"), {
             fontName: "Helvetica-Normal",
             fontSize: Settings.FONT_SIZE * 1.2,
             fill: PATCH_LABEL_COLOR
@@ -123,7 +127,7 @@ export class TutorialTrialScreen extends TutorialScreen {
         this.addChild(this.patchRightLabel);
 
         // add text shown when animation is paused
-        this.pauseText = new PIXI.Text("Select a box", {
+        this.pauseText = new PIXI.Text(t("pauseText"), {
             fontName: "Helvetica-Normal",
             fontSize: Settings.FONT_SIZE * 0.9,
             fill: PATCH_LABEL_COLOR
@@ -144,7 +148,7 @@ export class TutorialTrialScreen extends TutorialScreen {
                 Settings.TEXT_BUTTON_HEIGHT,
                 START_BUTTON_COLOR,
                 START_BUTTON_STROKE_COLOR,
-                "START TUTORIAL TRIAL",
+                t("tutorialTrialScreen.startTutorialTrialButton"),
                 TEXT_COLOR,
                 START_BUTTON_HOVER_COLOR,
                 false,
@@ -155,15 +159,13 @@ export class TutorialTrialScreen extends TutorialScreen {
         this.addChild(this.startButton);
 
         // add tutorial text
-        this.tutorialText.text =
-            "Try it out a few times! Keep in mind that you will not receive feedback on whether or not you have chosen the correct box during the actual test."
-            + " To complete the tutorial, click NEXT.";
+        this.tutorialText.text = t("tutorialTrialScreen.tutorialText");
 
         // add trial texts
         const TRIAL_TEXT_X: number = Settings.WINDOW_WIDTH_PX / 2;
         const TRIAL_TEXT_Y: number = Settings.TRIAL_SCREEN_Y + this.tutorialTrialWorld.patchLeft.height / 1.1;
 
-        this.trialCorrectText = new PIXI.Text("Correct",
+        this.trialCorrectText = new PIXI.Text(t("tutorialTrialScreen.trialCorrect"),
             {
                 fontName: 'Helvetica-Normal',
                 fontSize: Settings.FONT_SIZE * 0.9,
@@ -178,7 +180,7 @@ export class TutorialTrialScreen extends TutorialScreen {
         this.trialCorrectText.x = TRIAL_TEXT_X;
         this.trialCorrectText.y = TRIAL_TEXT_Y;
 
-        this.trialIncorrectText = new PIXI.Text("Incorrect",
+        this.trialIncorrectText = new PIXI.Text(t("tutorialTrialScreen.trialIncorrect"),
             {
                 fontName: 'Helvetica-Normal',
                 fontSize: Settings.FONT_SIZE * 0.9,
@@ -193,7 +195,7 @@ export class TutorialTrialScreen extends TutorialScreen {
         this.trialIncorrectText.x = TRIAL_TEXT_X;
         this.trialIncorrectText.y = TRIAL_TEXT_Y;
 
-        this.trialFinishedText = new PIXI.Text("Click NEXT to proceed",
+        this.trialFinishedText = new PIXI.Text(t("tutorialTrialScreen.trialFinished"),
             {
                 fontName: 'Helvetica-Normal',
                 fontSize: Settings.FONT_SIZE * 0.9,
@@ -428,6 +430,9 @@ export class TutorialTrialScreen extends TutorialScreen {
     }
 
     resize = (width: number, height: number) => {
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
+
         // button positions
         const backButtonX: number = width / 2 - Settings.NEXT_BACK_BUTTON_SPACING;
         const nextButtonX: number = width / 2 + Settings.NEXT_BACK_BUTTON_SPACING;
@@ -466,7 +471,7 @@ export class TutorialTrialScreen extends TutorialScreen {
                 Settings.TEXT_BUTTON_HEIGHT,
                 NEXT_BUTTON_COLOR,
                 NEXT_BUTTON_STROKE_COLOR,
-                "BACK",
+                t("backButton"),
                 TEXT_COLOR,
                 NEXT_BUTTON_HOVER_COLOR
             );
@@ -484,7 +489,7 @@ export class TutorialTrialScreen extends TutorialScreen {
                 Settings.TEXT_BUTTON_HEIGHT,
                 NEXT_BUTTON_COLOR,
                 NEXT_BUTTON_STROKE_COLOR,
-                "NEXT",
+                t("nextButton"),
                 TEXT_COLOR,
                 NEXT_BUTTON_HOVER_COLOR
             );
@@ -520,7 +525,7 @@ export class TutorialTrialScreen extends TutorialScreen {
                     Settings.TEXT_BUTTON_HEIGHT,
                     START_BUTTON_COLOR,
                     START_BUTTON_STROKE_COLOR,
-                    "START TUTORIAL TRIAL",
+                    t("tutorialTrialScreen.startTutorialTrialButton"),
                     TEXT_COLOR,
                     START_BUTTON_HOVER_COLOR,
                     false,
@@ -565,5 +570,27 @@ export class TutorialTrialScreen extends TutorialScreen {
         this.trialFinishedText.style.wordWrapWidth = Settings.HEADER_WIDTH;
         this.trialFinishedText.x = TRIAL_TEXT_X;
         this.trialFinishedText.y = TRIAL_TEXT_Y;
+    }
+
+    languageChangeHandler = (): void => {
+        const t: TFunction = i18next.t.bind(i18next);
+        const testType: TestType = this.gameApp.testType;
+        if (testType == TestType.MOTION) {
+            this.tutorialText.text = t("tutorialTrialScreen.tutorialText");
+        } else if (testType == TestType.FORM_FIXED) {
+            this.tutorialText.text = t("tutorialTrialScreen.tutorialText");
+        } else if (testType == TestType.FORM_RANDOM) {
+            this.tutorialText.text = t("tutorialTrialScreen.tutorialText");
+        }
+        this.header.text = t("tutorialHeader");
+        this.patchLeftLabel.text = t("patchLabelOne");
+        this.patchRightLabel.text = t("patchLabelTwo");
+        this.pauseText.text = t("pauseText");
+        this.startButton.buttonText.text = t("tutorialTrialScreen.startTutorialTrialButton");
+        this.trialCorrectText.text = t("tutorialTrialScreen.trialCorrect");
+        this.trialIncorrectText.text = t("tutorialTrialScreen.trialIncorrect");
+        this.trialFinishedText.text = t("tutorialTrialScreen.trialFinished");
+        this.nextButton.buttonText.text = t("nextButton");
+        this.backButton.buttonText.text = t("backButton");
     }
 }

@@ -1,3 +1,4 @@
+import i18next, { TFunction } from "i18next";
 import * as PIXI from "pixi.js";
 import { BACKGROUND_COLOR, TEXT_COLOR } from "../utils/Constants";
 import { Settings } from "../utils/Settings";
@@ -10,10 +11,13 @@ export class MobileScreen extends PIXI.Container {
     abortSprite: PIXI.Sprite;
     checkMarkSprite1: PIXI.Sprite;
     checkMarkSprite2: PIXI.Sprite;
-    text: PIXI.Text;
+    warningText: PIXI.Text;
 
     constructor() {
         super();
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
+
         const width: number = Settings.WINDOW_WIDTH_PX;
         const height: number = Settings.WINDOW_HEIGHT_PX;
 
@@ -46,9 +50,7 @@ export class MobileScreen extends PIXI.Container {
         this.addChild(this.mobileSprite)
 
         // add text
-        this.text = new PIXI.Text(
-            "Woops, it looks like you are using a mobile device.\n\n" +
-            "This site is only supported for desktop PCs and tablet devices.",
+        this.warningText = new PIXI.Text(t("mobileScreen.warning"),
             {
                 fontSize: Settings.FONT_SIZE * 3,
                 fill: TEXT_COLOR,
@@ -58,11 +60,11 @@ export class MobileScreen extends PIXI.Container {
                 lineHeight: 0
             }
         );
-        this.text.anchor.set(0.5, 0.5);
-        this.text.x = this.mobileSprite.x;
-        this.text.y = height / 2;
-        this.text.roundPixels = true;
-        this.addChild(this.text);
+        this.warningText.anchor.set(0.5, 0.5);
+        this.warningText.x = this.mobileSprite.x;
+        this.warningText.y = height / 2;
+        this.warningText.roundPixels = true;
+        this.addChild(this.warningText);
 
         // add desktop and tablet sprites
         const desktopTabletSpacing: number = width / 6;
@@ -112,10 +114,10 @@ export class MobileScreen extends PIXI.Container {
         this.mobileSprite.height = height * 0.15;
 
         // text
-        this.text.style.fontSize = Settings.FONT_SIZE * 3;
-        this.text.style.wordWrapWidth = Settings.TUTORIAL_TEXT_WIDTH;
-        this.text.x = this.mobileSprite.x;
-        this.text.y = height / 2;
+        this.warningText.style.fontSize = Settings.FONT_SIZE * 3;
+        this.warningText.style.wordWrapWidth = Settings.TUTORIAL_TEXT_WIDTH;
+        this.warningText.x = this.mobileSprite.x;
+        this.warningText.y = height / 2;
 
         // desktop and tablet sprites
         const desktopTabletSpacing: number = width / 6;
@@ -129,5 +131,10 @@ export class MobileScreen extends PIXI.Container {
         this.tabletSprite.y = this.desktopSprite.y;
         this.tabletSprite.width = width * 0.18;
         this.tabletSprite.height = height * 0.15;
+    }
+
+    languageChangeHandler = (): void => {
+        const t: TFunction = i18next.t.bind(i18next);
+        this.warningText.text = t("mobileScreen.warning");
     }
 }

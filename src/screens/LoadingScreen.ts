@@ -60,4 +60,8 @@ export class LoadingScreen extends PIXI.Container {
         // loading spinner
         this.loadingSpinner.position.set(width / 2, height / 2 + height / 8);
     }
+
+    languageChangeHandler = (): void => {
+        return;
+    }
 }

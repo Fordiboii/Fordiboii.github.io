@@ -23,6 +23,7 @@ import { SpriteButton } from "../objects/buttons/SpriteButton";
 import { GameApp } from '../app';
 import { Trial } from '../interfaces/trial';
 import { TestResults } from '../objects/TestResults';
+import i18next, { TFunction } from 'i18next';
 
 export class TestScreen extends PIXI.Container {
     private gameApp: GameApp;
@@ -63,6 +64,9 @@ export class TestScreen extends PIXI.Container {
         // reference to game object
         this.gameApp = gameApp;
 
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
+
         this.testType = testType;
 
         this.reversalPoints = Settings.STAIRCASE_REVERSAL_POINTS;
@@ -80,10 +84,6 @@ export class TestScreen extends PIXI.Container {
         this.correctAnswerFactor = Psychophysics.decibelToFactor(Settings.STAIRCASE_CORRECT_ANSWER_DB);
         this.wrongAnswerFactor = Psychophysics.decibelToFactor(Settings.STAIRCASE_WRONG_ANSWER_DB);
 
-        this.setup();
-    }
-
-    setup = (): void => {
         // create motion or form world and add to container
         if (this.testType == TestType.MOTION) {
             this.world = new MotionWorld(this);
@@ -111,7 +111,7 @@ export class TestScreen extends PIXI.Container {
         this.world.patchRight.filters = [this.glowFilter2];
 
         // create patch labels and add to container
-        this.patchLeftLabel = new PIXI.Text("1", {
+        this.patchLeftLabel = new PIXI.Text(t("patchLabelOne"), {
             fontName: "Helvetica-Normal",
             fontSize: Settings.FONT_SIZE * 1.3,
             fill: PATCH_LABEL_COLOR
@@ -122,7 +122,7 @@ export class TestScreen extends PIXI.Container {
         this.patchLeftLabel.y = this.world.patchLeft.y - Settings.WINDOW_HEIGHT_PX / 16;
         this.addChild(this.patchLeftLabel);
 
-        this.patchRightLabel = new PIXI.Text("2", {
+        this.patchRightLabel = new PIXI.Text(t("patchLabelTwo"), {
             fontName: "Helvetica-Normal",
             fontSize: Settings.FONT_SIZE * 1.3,
             fill: PATCH_LABEL_COLOR
@@ -134,7 +134,7 @@ export class TestScreen extends PIXI.Container {
         this.addChild(this.patchRightLabel);
 
         // add text shown when animation is paused
-        this.pauseText = new PIXI.Text("Select a box", {
+        this.pauseText = new PIXI.Text(t("pauseText"), {
             fontName: "Helvetica-Normal",
             fontSize: Settings.FONT_SIZE,
             fill: PATCH_LABEL_COLOR
@@ -155,7 +155,7 @@ export class TestScreen extends PIXI.Container {
                 Settings.TEXT_BUTTON_HEIGHT,
                 START_BUTTON_COLOR,
                 START_BUTTON_STROKE_COLOR,
-                "START TEST",
+                t("testScreen.startTestButton"),
                 TEXT_COLOR,
                 START_BUTTON_HOVER_COLOR
             );
@@ -468,6 +468,9 @@ export class TestScreen extends PIXI.Container {
     }
 
     resize = (width: number, height: number) => {
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
+
         // world
         this.world.resize();
 
@@ -488,7 +491,7 @@ export class TestScreen extends PIXI.Container {
                     Settings.TEXT_BUTTON_HEIGHT,
                     START_BUTTON_COLOR,
                     START_BUTTON_STROKE_COLOR,
-                    "START TEST",
+                    t("testScreen.startTestButton"),
                     TEXT_COLOR,
                     START_BUTTON_HOVER_COLOR
                 );
@@ -496,7 +499,7 @@ export class TestScreen extends PIXI.Container {
             this.startButton.on("touchend", this.startButtonClickHandler);
             this.addChild(this.startButton);
         } else {
-            // re-add patch event handlers make them interactive
+            // re-add patch event handlers and make them interactive
             this.resizeEventHandler();
         }
 
@@ -511,5 +514,13 @@ export class TestScreen extends PIXI.Container {
         this.pauseText.style.fontSize = Settings.FONT_SIZE * 0.9;
         this.pauseText.x = width / 2;
         this.pauseText.y = height / 2 + this.world.patchLeft.height / 1.5;
+    }
+
+    languageChangeHandler = (): void => {
+        const t: TFunction = i18next.t.bind(i18next);
+        this.patchLeftLabel.text = t("patchLabelOne");
+        this.patchRightLabel.text = t("patchLabelTwo");
+        this.startButton.buttonText.text = t("testScreen.startTestButton");
+        this.pauseText.text = t("pauseText");
     }
 }

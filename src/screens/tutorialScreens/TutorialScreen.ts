@@ -1,3 +1,4 @@
+import i18next, { TFunction } from 'i18next';
 import * as PIXI from 'pixi.js';
 import { GameApp } from '../../app';
 import { SpriteButton } from '../../objects/buttons/SpriteButton';
@@ -37,6 +38,9 @@ export abstract class TutorialScreen extends PIXI.Container {
         super();
         // reference to game object
         this.gameApp = gameApp;
+
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
 
         // make interactive to detect touch drag event
         this.interactive = true;
@@ -101,7 +105,7 @@ export abstract class TutorialScreen extends PIXI.Container {
                 Settings.TEXT_BUTTON_HEIGHT,
                 NEXT_BUTTON_COLOR,
                 NEXT_BUTTON_STROKE_COLOR,
-                "BACK",
+                t("backButton"),
                 TEXT_COLOR,
                 NEXT_BUTTON_HOVER_COLOR
             );
@@ -116,7 +120,7 @@ export abstract class TutorialScreen extends PIXI.Container {
                 Settings.TEXT_BUTTON_HEIGHT,
                 NEXT_BUTTON_COLOR,
                 NEXT_BUTTON_STROKE_COLOR,
-                "NEXT",
+                t("nextButton"),
                 TEXT_COLOR,
                 NEXT_BUTTON_HOVER_COLOR
             );

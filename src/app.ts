@@ -13,12 +13,12 @@ import { ResultsScreen } from './screens/ResultsScreen';
 import { Settings } from './utils/Settings';
 import { TestResults } from './objects/TestResults';
 import { TestType } from './utils/Enums';
+import i18next from 'i18next';
 
 export class GameApp {
     public renderer: PIXI.Renderer;
     public stage: PIXI.Container;
-    public activeScreens: PIXI.Container;
-    public screens: Screens;
+    public screens: Screens = {};
     public currentScreen: TestScreen | LandingPageScreen | TutorialSitDownScreen | TutorialTaskScreen | TutorialTrialScreen | LoadingScreen | ResultsScreen | MobileScreen;
     private backgroundSprite: PIXI.Sprite = new PIXI.Sprite(PIXI.Texture.WHITE);
     private testResults: TestResults;
@@ -38,10 +38,6 @@ export class GameApp {
 
         // add background color
         this.stage.addChild(this.backgroundSprite);
-
-        // for storing screen objects
-        this.activeScreens = new PIXI.Container();
-        this.stage.addChild(this.activeScreens);
 
         if (process.env.NODE_ENV != "production") {
             // For using pixijs inspection dev tool.
@@ -73,6 +69,11 @@ export class GameApp {
         // add resize event listener
         window.addEventListener('resize', this.resize);
 
+        // add language change event handler
+        i18next.on("languageChanged", (_lng): void => {
+            Object.values(this.screens).forEach(screen => screen.languageChangeHandler());
+        });
+
         // load settings
         Settings.load();
 
@@ -84,7 +85,8 @@ export class GameApp {
         // check if user is on a mobile device
         if (window.matchMedia("only screen and (max-width: 760px)").matches) {
             const mobileScreen: MobileScreen = new MobileScreen();
-            this.activeScreens.addChild(mobileScreen);
+            this.screens.mobileScreen = mobileScreen;
+            this.stage.addChild(mobileScreen);
             this.currentScreen = mobileScreen;
             return;
         }
@@ -116,7 +118,8 @@ export class GameApp {
 
     private showLoadingScreen = (): void => {
         const loadingScreen: LoadingScreen = new LoadingScreen();
-        this.activeScreens.addChild(loadingScreen);
+        this.screens.loadingScreen = loadingScreen;
+        this.stage.addChild(loadingScreen);
         this.currentScreen = loadingScreen;
     }
 
@@ -126,24 +129,20 @@ export class GameApp {
         const tutorialSitDownScreen: TutorialSitDownScreen = new TutorialSitDownScreen(this, this.testType);
         const tutorialTaskScreen: TutorialTaskScreen = new TutorialTaskScreen(this, this.testType);
         const tutorialTrialScreen: TutorialTrialScreen = new TutorialTrialScreen(this, this.testType);
-        const motionScreen: TestScreen = new TestScreen(this, this.testType);
+        const testScreen: TestScreen = new TestScreen(this, this.testType);
 
-        this.screens = {
-            landingPageScreen: landingPageScreen,
-            tutorialSitDownScreen: tutorialSitDownScreen,
-            tutorialTaskScreen: tutorialTaskScreen,
-            tutorialTrialScreen: tutorialTrialScreen,
-            testScreen: motionScreen,
-            resultsScreen: undefined
-        };
+        this.screens.landingPageScreen = landingPageScreen;
+        this.screens.tutorialSitDownScreen = tutorialSitDownScreen;
+        this.screens.tutorialTaskScreen = tutorialTaskScreen;
+        this.screens.tutorialTrialScreen = tutorialTrialScreen;
+        this.screens.testScreen = testScreen;
+
+        this.stage.addChild(landingPageScreen, tutorialSitDownScreen, tutorialTaskScreen, tutorialTrialScreen, testScreen);
 
         // set background size and color
         this.backgroundSprite.width = Settings.WINDOW_WIDTH_PX;
         this.backgroundSprite.height = Settings.WINDOW_HEIGHT_PX;
         this.backgroundSprite.tint = BACKGROUND_COLOR;
-
-        // add screens to stage
-        this.activeScreens.addChild(landingPageScreen, tutorialSitDownScreen, tutorialTaskScreen, tutorialTrialScreen, motionScreen);
 
         // hide screens and change to first tutorial screen
         this.screens.tutorialSitDownScreen.visible = false;
@@ -170,22 +169,22 @@ export class GameApp {
         // disable current screen and remove event listeners
         this.currentScreen.visible = false;
         this.currentScreen.removeEventListeners();
-        // create new instances of MotionScreen and TutorialTrialScreen if navigated back to
+        // create new instances of TestScreen and TutorialTrialScreen if navigated back to
         if (this.currentScreen === this.screens.testScreen) {
-            this.activeScreens.removeChild(this.screens.testScreen);
+            this.stage.removeChild(this.screens.testScreen);
             this.screens.testScreen = new TestScreen(this, this.testType);
             this.screens.testScreen.visible = false;
-            this.activeScreens.addChild(this.screens.testScreen);
+            this.stage.addChild(this.screens.testScreen);
         } else if (this.currentScreen === this.screens.tutorialTrialScreen) {
-            this.activeScreens.removeChild(this.screens.tutorialTrialScreen);
+            this.stage.removeChild(this.screens.tutorialTrialScreen);
             this.screens.tutorialTrialScreen = new TutorialTrialScreen(this, this.testType);
             this.screens.tutorialTrialScreen.visible = false;
-            this.activeScreens.addChild(this.screens.tutorialTrialScreen);
+            this.stage.addChild(this.screens.tutorialTrialScreen);
         }
         if (key == "resultsScreen") {
             // create result screen and set it to current screen.
             this.screens.resultsScreen = new ResultsScreen(this);
-            this.activeScreens.addChild(this.screens.resultsScreen);
+            this.stage.addChild(this.screens.resultsScreen);
             this.currentScreen = this.screens.resultsScreen;
         } else if (key == "testScreen") {
             // hide background
@@ -219,9 +218,8 @@ export class GameApp {
         // resize background
         this.backgroundSprite.width = newWidth;
         this.backgroundSprite.height = newHeight;
-        // @ts-ignore. Ignores type error.
-        // Resize all screens.   
-        this.activeScreens.children.forEach(child => { child.resize(newWidth, newHeight) });
+        // resize all screens.   
+        Object.values(this.screens).forEach(screen => screen.resize(newWidth, newHeight));
     };
 
     getTestResults = (): TestResults => {

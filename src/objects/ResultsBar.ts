@@ -1,3 +1,4 @@
+import i18next, { TFunction } from "i18next";
 import * as PIXI from "pixi.js";
 import {
     RESULTS_GREEN_COLOR,
@@ -18,6 +19,9 @@ export class ResultsBar extends PIXI.Container {
 
     constructor(x: number, y: number, width: number, height: number) {
         super();
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
+
         // padding for labels and label descriptions
         const labelPadding: number = Settings.WINDOW_HEIGHT_PX / 80;
 
@@ -46,7 +50,7 @@ export class ResultsBar extends PIXI.Container {
         this.addChild(this.resultBarGradient);
 
         // add min score label
-        this.minLabel = new PIXI.Text("1",
+        this.minLabel = new PIXI.Text(t("resultsScreen.bar.leftLabel"),
             {
                 fontSize: Settings.FONT_SIZE * 1.1,
                 fill: TEXT_COLOR,
@@ -60,7 +64,7 @@ export class ResultsBar extends PIXI.Container {
         this.addChild(this.minLabel);
 
         // add max score label
-        this.maxLabel = new PIXI.Text("100",
+        this.maxLabel = new PIXI.Text(t("resultsScreen.bar.rightLabel"),
             {
                 fontSize: Settings.FONT_SIZE * 1.1,
                 fill: TEXT_COLOR,

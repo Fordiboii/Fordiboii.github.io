@@ -4,12 +4,9 @@ import { TutorialTrialScreen } from "../screens/tutorialScreens/TutorialTrialScr
 import { TestScreen } from "../screens/TestScreen";
 import { ResultsScreen } from "../screens/ResultsScreen";
 import { LandingPageScreen } from "../screens/LandingPageScreen";
+import { LoadingScreen } from "../screens/LoadingScreen";
+import { MobileScreen } from "../screens/MobileScreen";
 
 export interface Screens {
-    landingPageScreen: LandingPageScreen,
-    tutorialSitDownScreen: TutorialSitDownScreen,
-    tutorialTaskScreen: TutorialTaskScreen,
-    tutorialTrialScreen: TutorialTrialScreen,
-    testScreen: TestScreen,
-    resultsScreen: ResultsScreen | undefined
+    [key: string]: LandingPageScreen | TutorialSitDownScreen | TutorialTaskScreen | TutorialTrialScreen | TestScreen | ResultsScreen | LoadingScreen | MobileScreen
 }

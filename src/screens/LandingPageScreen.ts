@@ -1,3 +1,4 @@
+import i18next, { TFunction } from 'i18next';
 import * as PIXI from 'pixi.js';
 import { GameApp } from '../app';
 import { TextButton } from '../objects/buttons/TextButton';
@@ -17,6 +18,9 @@ export class LandingPageScreen extends TutorialScreen {
     constructor(gameApp: GameApp, testType: TestType) {
         super(gameApp);
 
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
+
         // add logo
         const logoTexture: PIXI.Texture = PIXI.Loader.shared.resources['magnoLogo'].texture;
         this.logo = new PIXI.Sprite(logoTexture);
@@ -30,33 +34,21 @@ export class LandingPageScreen extends TutorialScreen {
 
         // set header text based on test type
         if (testType == TestType.MOTION) {
-            this.header.text = "MOTION TEST";
+            this.header.text = t("motion.header");
         } else if (testType == TestType.FORM_FIXED) {
-            this.header.text = "FORM FIXED TEST";
+            this.header.text = t("formFixed.header");
         } else if (testType == TestType.FORM_RANDOM) {
-            this.header.text = "FORM RANDOM TEST";
+            this.header.text = t("formRandom.header");
         }
         this.header.y = this.logo.y + this.logo.height / 2;
 
         // set tutorial text based on test type
         if (testType == TestType.MOTION) {
-            this.tutorialText.text = "The Magno motion test measures your visual sensitivity to motion and is used in dyslexia research to further our understanding " +
-                "of the disorder and its underlying causes. " +
-                "\n\nYou will first go through a tutorial as preparation before taking the test. After completing it you will receive a score between 1 and 100, where 1 is the best possible score. " +
-                "The test takes approximately 8 minutes. " +
-                "Click NEXT to continue.";
+            this.tutorialText.text = t("motion.landingPageScreen.tutorialText");
         } else if (testType == TestType.FORM_FIXED) {
-            this.tutorialText.text = "The Magno form fixed test measures your object detection ability and is used in dyslexia research to further our understanding " +
-                "of the disorder and its underlying causes. " +
-                "\n\nYou will first go through a tutorial as preparation before taking the test. After completing it you will receive a score between 1 and 100, where 1 is the best possible score. " +
-                "The test takes approximately 8 minutes. " +
-                "Click NEXT to continue.";
+            this.tutorialText.text = t("formFixed.landingPageScreen.tutorialText");
         } else if (testType == TestType.FORM_RANDOM) {
-            this.tutorialText.text = "The Magno form random test measures your object detection ability and is used in dyslexia research to further our understanding " +
-                "of the disorder and its underlying causes. " +
-                "\n\nYou will first go through a tutorial as preparation before taking the test. After completing it you will receive a score between 1 and 100, where 1 is the best possible score. " +
-                "The test takes approximately 8 minutes. " +
-                "Click NEXT to continue.";
+            this.tutorialText.text = t("formRandom.landingPageScreen.tutorialText");
         }
         this.tutorialText.anchor.set(0.5);
         this.tutorialText.y = Settings.WINDOW_HEIGHT_PX / 2;
@@ -107,6 +99,9 @@ export class LandingPageScreen extends TutorialScreen {
     }
 
     resize = (width: number, height: number) => {
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
+
         // button position
         const nextButtonY: number = height - 1.3 * Settings.CIRCLE_BUTTON_TOP_BOTTOM_PADDING - Settings.TEXT_BUTTON_HEIGHT / 2;
 
@@ -144,7 +139,7 @@ export class LandingPageScreen extends TutorialScreen {
                 Settings.TEXT_BUTTON_HEIGHT,
                 NEXT_BUTTON_COLOR,
                 NEXT_BUTTON_STROKE_COLOR,
-                "NEXT",
+                t("nextButton"),
                 TEXT_COLOR,
                 NEXT_BUTTON_HOVER_COLOR
             );
@@ -161,5 +156,25 @@ export class LandingPageScreen extends TutorialScreen {
         // circles container
         this.circleContainer.x = width / 2 - this.circleContainer.getBounds().width / 2;
         this.circleContainer.y = height - Settings.CIRCLE_BUTTON_TOP_BOTTOM_PADDING / 1.5;
+    }
+
+    /**
+     * Updates all text to the current language
+     */
+    languageChangeHandler = (): void => {
+        const t: TFunction = i18next.t.bind(i18next);
+
+        const testType: TestType = this.gameApp.testType;
+        if (testType == TestType.MOTION) {
+            this.header.text = t("motion.header");
+            this.tutorialText.text = t("motion.landingPageScreen.tutorialText");
+        } else if (testType == TestType.FORM_FIXED) {
+            this.header.text = t("formFixed.header");
+            this.tutorialText.text = t("formFixed.landingPageScreen.tutorialText");
+        } else if (testType == TestType.FORM_RANDOM) {
+            this.header.text = t("formRandom.header");
+            this.tutorialText.text = t("formRandom.landingPageScreen.tutorialText");
+        }
+        this.nextButton.buttonText.text = t("nextButton");
     }
 }

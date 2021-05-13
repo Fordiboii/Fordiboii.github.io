@@ -1,3 +1,4 @@
+import i18next, { TFunction } from 'i18next';
 import * as PIXI from 'pixi.js';
 import { GameApp } from '../../app';
 import { TextButton } from '../../objects/buttons/TextButton';
@@ -17,14 +18,10 @@ export class TutorialSitDownScreen extends TutorialScreen {
     constructor(gameApp: GameApp, testType: TestType) {
         super(gameApp);
 
-        // set header text based on test type
-        if (testType == TestType.MOTION) {
-            this.header.text = "MOTION TEST TUTORIAL";
-        } else if (testType == TestType.FORM_FIXED) {
-            this.header.text = "FORM FIXED TEST TUTORIAL";
-        } else if (testType == TestType.FORM_RANDOM) {
-            this.header.text = "FORM RANDOM TEST TUTORIAL";
-        }
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
+
+        this.header.text = t("tutorialHeader");
 
         // add tutorial image
         const tutorialImageTexture: PIXI.Texture = PIXI.Loader.shared.resources['sitDownImage'].texture;
@@ -37,10 +34,7 @@ export class TutorialSitDownScreen extends TutorialScreen {
         this.addChild(this.tutorialImage);
 
         // add tutorial text
-        this.tutorialText.text =
-            "Take a seat with your stomach touching the edge of the table. Place your device " +
-            Settings.SCREEN_VIEWING_DISTANCE_MM / 10 +
-            " cm from the edge of the table.";
+        this.tutorialText.text = t("tutorialSitDownScreen.tutorialText", { screenViewingDistance: Settings.SCREEN_VIEWING_DISTANCE_MM / 10 });
 
         // set selected circle
         const circleFilledTexture: PIXI.Texture = PIXI.Loader.shared.resources['circleFilled'].texture;
@@ -104,6 +98,9 @@ export class TutorialSitDownScreen extends TutorialScreen {
     }
 
     resize = (width: number, height: number) => {
+        // get language translator
+        const t: TFunction = i18next.t.bind(i18next);
+
         // button positions
         const backButtonX: number = width / 2 - Settings.NEXT_BACK_BUTTON_SPACING;
         const nextButtonX: number = width / 2 + Settings.NEXT_BACK_BUTTON_SPACING;
@@ -142,7 +139,7 @@ export class TutorialSitDownScreen extends TutorialScreen {
                 Settings.TEXT_BUTTON_HEIGHT,
                 NEXT_BUTTON_COLOR,
                 NEXT_BUTTON_STROKE_COLOR,
-                "BACK",
+                t("backButton"),
                 TEXT_COLOR,
                 NEXT_BUTTON_HOVER_COLOR
             );
@@ -160,7 +157,7 @@ export class TutorialSitDownScreen extends TutorialScreen {
                 Settings.TEXT_BUTTON_HEIGHT,
                 NEXT_BUTTON_COLOR,
                 NEXT_BUTTON_STROKE_COLOR,
-                "NEXT",
+                t("nextButton"),
                 TEXT_COLOR,
                 NEXT_BUTTON_HOVER_COLOR
             );
@@ -183,5 +180,20 @@ export class TutorialSitDownScreen extends TutorialScreen {
         this.tutorialImage.y = this.contentY + height / 32;
         this.tutorialImage.width = width / 3;
         this.tutorialImage.height = height / 2.3;
+    }
+
+    languageChangeHandler = (): void => {
+        const t: TFunction = i18next.t.bind(i18next);
+        const testType: TestType = this.gameApp.testType;
+        if (testType == TestType.MOTION) {
+            this.tutorialText.text = t("tutorialSitDownScreen.tutorialText", { screenViewingDistance: Settings.SCREEN_VIEWING_DISTANCE_MM / 10 });
+        } else if (testType == TestType.FORM_FIXED) {
+            this.tutorialText.text = t("tutorialSitDownScreen.tutorialText", { screenViewingDistance: Settings.SCREEN_VIEWING_DISTANCE_MM / 10 });
+        } else if (testType == TestType.FORM_RANDOM) {
+            this.tutorialText.text = t("tutorialSitDownScreen.tutorialText", { screenViewingDistance: Settings.SCREEN_VIEWING_DISTANCE_MM / 10 });
+        }
+        this.header.text = t("tutorialHeader");
+        this.nextButton.buttonText.text = t("nextButton");
+        this.backButton.buttonText.text = t("backButton");
     }
 }
