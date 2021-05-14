@@ -31,7 +31,6 @@ export class TutorialTaskScreen extends TutorialScreen {
         // get language translator
         const t: TFunction = i18next.t.bind(i18next);
 
-        // set header
         this.header.text = t("tutorialHeader");
 
         // set tutorial world based on test type
@@ -287,10 +286,10 @@ export class TutorialTaskScreen extends TutorialScreen {
         } else if (testType == TestType.FORM_RANDOM) {
             this.tutorialText.text = t("formRandom.tutorialTaskScreen.tutorialText");
         }
-        this.header.text = t("tutorialHeader");
-        this.patchLeftLabel.text = t("patchLabelOne");
-        this.patchRightLabel.text = t("patchLabelTwo");
-        this.nextButton.buttonText.text = t("nextButton");
-        this.backButton.buttonText.text = t("backButton");
+        this.header.text = i18next.t("tutorialHeader");
+        this.patchLeftLabel.text = i18next.t("patchLabelOne");
+        this.patchRightLabel.text = i18next.t("patchLabelTwo");
+        this.nextButton.buttonText.text = i18next.t("nextButton");
+        this.backButton.buttonText.text = i18next.t("backButton");
     }
 }
