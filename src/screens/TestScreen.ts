@@ -27,8 +27,6 @@ import i18next, { TFunction } from 'i18next';
 
 export class TestScreen extends PIXI.Container {
     private gameApp: GameApp;
-    private testType: TestType;
-
     private world: MotionWorld | FormWorld;
 
     public reversalPoints: number;
@@ -59,15 +57,13 @@ export class TestScreen extends PIXI.Container {
     public glowFilter1: any;
     public glowFilter2: any;
 
-    constructor(gameApp: GameApp, testType: TestType) {
+    constructor(gameApp: GameApp) {
         super();
         // reference to game object
         this.gameApp = gameApp;
 
         // get language translator
         const t: TFunction = i18next.t.bind(i18next);
-
-        this.testType = testType;
 
         this.reversalPoints = Settings.STAIRCASE_REVERSAL_POINTS;
         this.maxSteps = Settings.STAIRCASE_MAX_ATTEMPTS;
@@ -85,11 +81,11 @@ export class TestScreen extends PIXI.Container {
         this.wrongAnswerFactor = Psychophysics.decibelToFactor(Settings.STAIRCASE_WRONG_ANSWER_DB);
 
         // create motion or form world and add to container
-        if (this.testType == TestType.MOTION) {
+        if (this.gameApp.testType == TestType.MOTION) {
             this.world = new MotionWorld(this);
-        } else if (this.testType == TestType.FORM_FIXED) {
+        } else if (this.gameApp.testType == TestType.FORM_FIXED) {
             this.world = new FormWorld(this, true);
-        } else if (this.testType == TestType.FORM_RANDOM) {
+        } else if (this.gameApp.testType == TestType.FORM_RANDOM) {
             this.world = new FormWorld(this, false);
         }
         this.addChild(this.world);
@@ -190,7 +186,7 @@ export class TestScreen extends PIXI.Container {
             if (!this.startButton.visible) {
                 this.pauseText.visible = true;
                 // hide objects if test type is FORM_FIXED or MOTION
-                if (this.testType == TestType.FORM_FIXED || this.testType == TestType.MOTION) {
+                if (this.gameApp.testType == TestType.FORM_FIXED || this.gameApp.testType == TestType.MOTION) {
                     this.world.patchLeftObjectsContainer.visible = false;
                     this.world.patchRightObjectsContainer.visible = false;
                 }

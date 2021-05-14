@@ -15,7 +15,7 @@ import { TutorialScreen } from './tutorialScreens/TutorialScreen';
 export class LandingPageScreen extends TutorialScreen {
     logo: PIXI.Sprite;
 
-    constructor(gameApp: GameApp, testType: TestType) {
+    constructor(gameApp: GameApp) {
         super(gameApp);
 
         // get language translator
@@ -33,21 +33,21 @@ export class LandingPageScreen extends TutorialScreen {
         this.backButton.visible = false;
 
         // set header text based on test type
-        if (testType == TestType.MOTION) {
+        if (this.gameApp.testType == TestType.MOTION) {
             this.header.text = t("motion.header");
-        } else if (testType == TestType.FORM_FIXED) {
+        } else if (this.gameApp.testType == TestType.FORM_FIXED) {
             this.header.text = t("formFixed.header");
-        } else if (testType == TestType.FORM_RANDOM) {
+        } else if (this.gameApp.testType == TestType.FORM_RANDOM) {
             this.header.text = t("formRandom.header");
         }
         this.header.y = this.logo.y + this.logo.height / 2;
 
         // set tutorial text based on test type
-        if (testType == TestType.MOTION) {
+        if (this.gameApp.testType == TestType.MOTION) {
             this.tutorialText.text = t("motion.landingPageScreen.tutorialText");
-        } else if (testType == TestType.FORM_FIXED) {
+        } else if (this.gameApp.testType == TestType.FORM_FIXED) {
             this.tutorialText.text = t("formFixed.landingPageScreen.tutorialText");
-        } else if (testType == TestType.FORM_RANDOM) {
+        } else if (this.gameApp.testType == TestType.FORM_RANDOM) {
             this.tutorialText.text = t("formRandom.landingPageScreen.tutorialText");
         }
         this.tutorialText.anchor.set(0.5);

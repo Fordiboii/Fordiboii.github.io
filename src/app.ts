@@ -125,11 +125,11 @@ export class GameApp {
 
     private setup = (): void => {
         // create screens
-        const landingPageScreen: LandingPageScreen = new LandingPageScreen(this, this.testType);
-        const tutorialSitDownScreen: TutorialSitDownScreen = new TutorialSitDownScreen(this, this.testType);
-        const tutorialTaskScreen: TutorialTaskScreen = new TutorialTaskScreen(this, this.testType);
-        const tutorialTrialScreen: TutorialTrialScreen = new TutorialTrialScreen(this, this.testType);
-        const testScreen: TestScreen = new TestScreen(this, this.testType);
+        const landingPageScreen: LandingPageScreen = new LandingPageScreen(this);
+        const tutorialSitDownScreen: TutorialSitDownScreen = new TutorialSitDownScreen(this);
+        const tutorialTaskScreen: TutorialTaskScreen = new TutorialTaskScreen(this);
+        const tutorialTrialScreen: TutorialTrialScreen = new TutorialTrialScreen(this);
+        const testScreen: TestScreen = new TestScreen(this);
 
         this.screens.landingPageScreen = landingPageScreen;
         this.screens.tutorialSitDownScreen = tutorialSitDownScreen;
@@ -172,12 +172,12 @@ export class GameApp {
         // create new instances of TestScreen and TutorialTrialScreen if navigated back to
         if (this.currentScreen === this.screens.testScreen) {
             this.stage.removeChild(this.screens.testScreen);
-            this.screens.testScreen = new TestScreen(this, this.testType);
+            this.screens.testScreen = new TestScreen(this);
             this.screens.testScreen.visible = false;
             this.stage.addChild(this.screens.testScreen);
         } else if (this.currentScreen === this.screens.tutorialTrialScreen) {
             this.stage.removeChild(this.screens.tutorialTrialScreen);
-            this.screens.tutorialTrialScreen = new TutorialTrialScreen(this, this.testType);
+            this.screens.tutorialTrialScreen = new TutorialTrialScreen(this);
             this.screens.tutorialTrialScreen.visible = false;
             this.stage.addChild(this.screens.tutorialTrialScreen);
         }

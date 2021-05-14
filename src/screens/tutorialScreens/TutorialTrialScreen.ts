@@ -52,7 +52,7 @@ export class TutorialTrialScreen extends TutorialScreen {
     public glowFilter1: any;
     public glowFilter2: any;
 
-    constructor(gameApp: GameApp, testType: TestType) {
+    constructor(gameApp: GameApp) {
         super(gameApp);
 
         // get language translator
@@ -67,11 +67,11 @@ export class TutorialTrialScreen extends TutorialScreen {
         this.header.text = t("tutorialHeader");
 
         // add tutorial world based on test type
-        if (testType == TestType.MOTION) {
+        if (this.gameApp.testType == TestType.MOTION) {
             this.tutorialTrialWorld = new MotionTutorialTrialWorld(this);
-        } else if (testType == TestType.FORM_FIXED) {
+        } else if (this.gameApp.testType == TestType.FORM_FIXED) {
             this.tutorialTrialWorld = new FormTutorialTrialWorld(this, true);
-        } else if (testType == TestType.FORM_RANDOM) {
+        } else if (this.gameApp.testType == TestType.FORM_RANDOM) {
             this.tutorialTrialWorld = new FormTutorialTrialWorld(this, false);
         }
 

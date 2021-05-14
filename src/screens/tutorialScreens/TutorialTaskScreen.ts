@@ -25,7 +25,7 @@ export class TutorialTaskScreen extends TutorialScreen {
     private patchLeftLabel: PIXI.Text;
     private patchRightLabel: PIXI.Text;
 
-    constructor(gameApp: GameApp, testType: TestType) {
+    constructor(gameApp: GameApp) {
         super(gameApp);
 
         // get language translator
@@ -34,11 +34,11 @@ export class TutorialTaskScreen extends TutorialScreen {
         this.header.text = t("tutorialHeader");
 
         // set tutorial world based on test type
-        if (testType == TestType.MOTION) {
+        if (this.gameApp.testType == TestType.MOTION) {
             this.tutorialTaskWorld = new MotionTutorialTaskWorld();
-        } else if (testType == TestType.FORM_FIXED) {
+        } else if (this.gameApp.testType == TestType.FORM_FIXED) {
             this.tutorialTaskWorld = new FormTutorialTaskWorld(true);
-        } else if (testType == TestType.FORM_RANDOM) {
+        } else if (this.gameApp.testType == TestType.FORM_RANDOM) {
             this.tutorialTaskWorld = new FormTutorialTaskWorld(false);
         }
 
@@ -100,11 +100,11 @@ export class TutorialTaskScreen extends TutorialScreen {
         this.addChild(this.redCross);
 
         // set tutorial text based on test type
-        if (testType == TestType.MOTION) {
+        if (this.gameApp.testType == TestType.MOTION) {
             this.tutorialText.text = t("motion.tutorialTaskScreen.tutorialText", { dotAnimationTime: Settings.DOT_MAX_ANIMATION_TIME / 1000 });
-        } else if (testType == TestType.FORM_FIXED) {
+        } else if (this.gameApp.testType == TestType.FORM_FIXED) {
             this.tutorialText.text = t("formFixed.tutorialTaskScreen.tutorialText", { lineDisplayTime: Settings.FORM_FIXED_DETECTION_TIME / 1000 });
-        } else if (testType == TestType.FORM_RANDOM) {
+        } else if (this.gameApp.testType == TestType.FORM_RANDOM) {
             this.tutorialText.text = t("formRandom.tutorialTaskScreen.tutorialText");
         }
 

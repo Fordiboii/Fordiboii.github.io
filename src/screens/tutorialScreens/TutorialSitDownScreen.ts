@@ -15,7 +15,7 @@ import { TutorialScreen } from './TutorialScreen';
 export class TutorialSitDownScreen extends TutorialScreen {
     private tutorialImage: PIXI.Sprite;
 
-    constructor(gameApp: GameApp, testType: TestType) {
+    constructor(gameApp: GameApp) {
         super(gameApp);
 
         // get language translator
