@@ -131,6 +131,7 @@ export class ResultsScreen extends PIXI.Container {
      */
     addEventListeners = (): void => {
         this.exitButton.on("click", this.exitButtonClickHandler);
+        this.exitButton.on("touchend", this.exitButtonClickHandler);
     }
 
     /**
@@ -138,6 +139,7 @@ export class ResultsScreen extends PIXI.Container {
      */
     removeEventListeners = (): void => {
         this.exitButton.off("click", this.exitButtonClickHandler);
+        this.exitButton.off("touchend", this.exitButtonClickHandler);
     }
 
     resize = (width: number, height: number): void => {
@@ -189,6 +191,9 @@ export class ResultsScreen extends PIXI.Container {
             NEXT_BUTTON_HOVER_COLOR
         );
         this.addChild(this.exitButton);
+
+        // add event listeners to newly created exit button
+        this.addEventListeners();
     }
 
     languageChangeHandler = (): void => {
