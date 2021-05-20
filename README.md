@@ -48,6 +48,12 @@ To add a translation, simply add a folder with your language's abbreviation as n
 
 To change the language, simply call `i18next.changeLanguage("{lng}")` with the language's abbreviation code.
 
+### Test Results
+
+The test results are stored in a class object under `src/objects/TestResults.ts` which can be stringified to JSON before sending it as payload to a backend service. A function for sending the results using `fetch` is found under `src/utils/PostResults`. It sends the results with a POST request to `localhost:3000`. 
+
+A simple http server can be started by running `node src/server.js` which listens for GET and POST requests at `localhost:3000`.
+
 ## Credits
 
 Forked from https://github.com/bySabi/pixijs-typescript-template.git.
