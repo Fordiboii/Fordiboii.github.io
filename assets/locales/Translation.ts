@@ -21,9 +21,7 @@ export default interface Translation {
     },
     resultsScreen: {
         header: string,
-        descriptionHigh: string,
-        descriptionMedium: string,
-        descriptionLow: string,
+        description: string,
         score: string,
         bar: {
             leftLabel: string,
