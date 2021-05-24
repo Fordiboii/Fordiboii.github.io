@@ -18,7 +18,6 @@ export class ResultsScreen extends PIXI.Container {
     private header: PIXI.Text;
     private score: PIXI.Text;
     private description: PIXI.Text;
-    private descriptionText: string;
     private resultsBar: ResultsBar;
     private exitButton: TextButton;
     private testResults: TestResults;
@@ -70,20 +69,12 @@ export class ResultsScreen extends PIXI.Container {
         );
         this.score.anchor.set(0.5, 0);
         this.score.x = Settings.WINDOW_WIDTH_PX / 2;
-        this.score.y = Settings.HEADER_Y_POSITION + Settings.WINDOW_HEIGHT_PX / 6;
+        this.score.y = Settings.WINDOW_HEIGHT_PX / 3;
         this.score.roundPixels = true;
         this.addChild(this.score);
 
-        if (threshold < 20) {
-            this.descriptionText = t("resultsScreen.descriptionHigh");
-        } else if (threshold >= 20 && threshold < 50) {
-            this.descriptionText = t("resultsScreen.descriptionMedium");
-        } else {
-            this.descriptionText = t("resultsScreen.descriptionLow");
-        }
-
         // add description
-        this.description = new PIXI.Text(this.descriptionText,
+        this.description = new PIXI.Text(t("resultsScreen.description"),
             {
                 fontSize: Settings.FONT_SIZE,
                 fill: TEXT_COLOR,
@@ -94,7 +85,7 @@ export class ResultsScreen extends PIXI.Container {
         );
         this.description.anchor.set(0.5, 0);
         this.description.x = Settings.WINDOW_WIDTH_PX / 2;
-        this.description.y = Settings.HEADER_Y_POSITION + Settings.WINDOW_HEIGHT_PX / 3;
+        this.description.y = Settings.WINDOW_HEIGHT_PX / 2.4;
         this.description.roundPixels = true;
         this.addChild(this.description);
 
@@ -162,13 +153,13 @@ export class ResultsScreen extends PIXI.Container {
         this.score.style.fontSize = SCORE_FONT_SIZE;
         this.score.style.wordWrapWidth = Settings.HEADER_WIDTH;
         this.score.x = width / 2;
-        this.score.y = Settings.HEADER_Y_POSITION + height / 6;
+        this.score.y = height / 3;
 
         // description
         this.description.style.fontSize = Settings.FONT_SIZE;
         this.description.style.wordWrapWidth = Settings.HEADER_WIDTH;
         this.description.x = width / 2;
-        this.description.y = Settings.HEADER_Y_POSITION + height / 3;
+        this.description.y = height / 2.4;
 
         // destroy old resultsbar and create new
         this.resultsBar.destroy();
@@ -198,19 +189,12 @@ export class ResultsScreen extends PIXI.Container {
 
     languageChangeHandler = (): void => {
         const t: TFunction = i18next.t.bind(i18next);
-        const threshold: number = this.testResults.threshold;
 
         this.header.text = t("resultsScreen.header");
         this.score.text = t("resultsScreen.score");
         this.resultsBar.minLabel.text = t("resultsScreen.bar.leftLabel");
         this.resultsBar.maxLabel.text = t("resultsScreen.bar.rightLabel");
-        if (threshold < 20) {
-            this.descriptionText = t("resultsScreen.descriptionHigh");
-        } else if (threshold >= 20 && threshold < 50) {
-            this.descriptionText = t("resultsScreen.descriptionMedium");
-        } else {
-            this.descriptionText = t("resultsScreen.descriptionLow");
-        }
+        this.description.text = t("resultsScreen.description");
         this.exitButton.buttonText.text = t("exitButton");
     }
 }

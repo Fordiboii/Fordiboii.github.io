@@ -26,9 +26,7 @@ export const translationNO: Translation = {
     },
     resultsScreen: {
         header: "TESTRESULTAT",
-        descriptionHigh: "Takk for deltakelsen.\n\n Din score ligger innenfor normalen.",
-        descriptionMedium: "Takk for deltakelsen.\n\n Din score ligger litt over normalen.",
-        descriptionLow: "Takk for deltakelsen.\n\n Din score ligger godt over normalen.",
+        description: "Takk for deltakelsen.",
         score: "DIN SCORE: {{score}}",
         bar: {
             leftLabel: "1",

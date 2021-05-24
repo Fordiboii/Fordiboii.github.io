@@ -26,9 +26,7 @@ export const translationEN: Translation = {
     },
     resultsScreen: {
         header: "TEST RESULTS",
-        descriptionHigh: "Thank you for participating.\n\n Your score is within the normal score range.",
-        descriptionMedium: "Thank you for participating.\n\n Your score is slightly above the normal score range.",
-        descriptionLow: "Thank you for participating.\n\n Your score is significantly above the normal score range.",
+        description: "Thank you for participating.",
         score: "YOUR SCORE: {{score}}",
         bar: {
             leftLabel: "1",
